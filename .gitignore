@@ -3,3 +3,4 @@
 
 # Directores
 *__pycache__/
+.venv/
