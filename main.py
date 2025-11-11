@@ -20,7 +20,9 @@ def main(args: 'Namespace'):
     utils.validate_environment()
 
     utils.test_api_access()
-    core.get_current_courses()
+    courses = core.get_current_courses()
+    weekly_tasks = core.get_weekly_tasks()
+
 
 
 if __name__ == "__main__":

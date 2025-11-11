@@ -1,9 +1,9 @@
 import logging
 import requests
 
-from pydantic import BaseModel
 from datetime import datetime, timezone
 from constants import BASE_URL, TOKEN
+from models import Course
 
 logger = logging.getLogger(__name__)
 
@@ -72,61 +72,19 @@ def set_log_level(log_level: str) -> None:
             root_logger.setLevel(logging.INFO)
 
 
-class Term(BaseModel):
-    id: int
-    name: str
-    start_at: str|None
-    end_at: str|None
-    workflow_state: str
-    grading_period_group_id: str|None
-    created_at: str
+def current_course_filter(course: Course) -> bool:
+    if not course.term.start_at or not course.term.end_at:
+        return False
 
+    term_start = convert_to_utc_datetime(course.term.start_at)
+    logger.debug(f"Term start (UTC): {term_start}")
+    term_end = convert_to_utc_datetime(course.term.end_at)
+    logger.debug(f"Term end (UTC): {term_end}")
 
-class Enrollments(BaseModel):
-    type: str
-    role: str
-    role_id: int
-    user_id: int
-    enrollment_state: str
-    limit_privileges_to_course_section: bool
+    # Get current UTC time
+    utc_now = datetime.now(timezone.utc)
+    logger.debug(f"Now (UTC): {utc_now}")
 
-
-class Calendar(BaseModel):
-    ics: str
-
-
-class Course(BaseModel):
-    id: int
-    name: str
-    course_code: str
-    account_id: int
-    created_at: str
-    start_at: str|None
-    default_view: str
-    enrollment_term_id: int
-    is_public: bool
-    grading_standard_id: int|None
-    root_account_id: int
-    uuid: str
-    license: str
-    grade_passback_settings: str|None = None
-    end_at: str|None
-    public_syllabus: bool
-    public_syllabus_to_auth: bool
-    storage_quota_mb: int
-    is_public_to_auth_users: bool
-    homeroom_course: bool
-    course_color: str|None
-    friendly_name: str|None
-    term: Term
-    apply_assignment_group_weights: bool
-    locale: str|None = None
-    calendar: Calendar
-    time_zone: str
-    blueprint: bool
-    template: bool
-    enrollments: list[Enrollments]
-    hide_final_grades: bool
-    workflow_state: str
-    course_format: str = ""
-    restrict_enrollments_to_course_dates: bool
+    if term_start <= utc_now <= term_end:
+        return True
+    return False
