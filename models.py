@@ -1,3 +1,4 @@
+from typing import Literal
 from pydantic import BaseModel
 from datetime import datetime
 
@@ -71,7 +72,7 @@ class Assignment(BaseModel):
     lock_at: datetime|None
     unlock_at: datetime|None
     has_overrides: bool
-    all_dates: list[datetime]|None
+    all_dates: list[datetime]|None # This is my best guess
     course_id: int
     html_url: str
     submissions_download_url: str
@@ -88,6 +89,65 @@ class Assignment(BaseModel):
     automatic_peer_reviews: bool
     peer_review_count: int|None
     peer_reviews_assign_at: datetime|None
+    intra_group_peer_reviews: bool
+    group_category_id: int
+    needs_grading_count: int
+    needs_grading_count_by_section: list[dict]|None
+    position: int
+    post_to_sis: bool|None
+    integration_id: str|None
+    integration_data: dict|None
+    points_possible: float
+    submission_types: list[str]
+    has_submitted_submission: bool
+    grading_type: Literal[
+        "pass_fail", 
+        "percent", 
+        "letter_grade", 
+        "gpa_scale", 
+        "points"
+    ]
+    grading_standard_id: int
+    published: bool
+    unpublished: bool
+    only_visible_to_overrides: bool
+    locked_for_user: bool
+    lock_info: LockInfo|None
+    lock_explanation: str
+    quiz_id: int|None
+    anonymous_submissions: bool|None
+    discussion_topic: dict|None # If needed, make DiscussionTopic model
+    freeze_on_copy: bool|None
+    frozen: bool|None
+    # Can only be string literals. Specify if needed
+    frozen_attributes: list[str]
+    submission: dict|None # Submission object. Make as needed
+    use_rubric_for_grading: bool|None
+    rubric_settings: dict|None
+    rubric: list[RubricCriteria|RubricRating]|None
+    assignment_visibility: list[int]|None
+    overrides: dict|None
+    omit_from_final_grade: bool|None
+    hide_in_gradebook: bool|None
+    moderated_grading: bool
+    grader_count: int
+    final_grader_id: int|None
+    grader_comments_visible_to_graders: bool
+    graders_anonymous_to_graders: bool
+    grader_names_visible_to_final_grade: bool
+    anonymous_grading: bool
+    allowed_attempts: int
+    post_manually: bool
+    score_statistics: ScoreStatistic|None
+    can_submit: bool|None
+    ab_guid: list[str]
+    annotatable_attachment_id: int|None
+    anonymize_students: bool|None
+    require_lockdown_browser: bool|None
+    important_dates: bool|None
+    muted: bool|None
+    anonymous_peer_reviews: bool
+    anonymous_instructor_annotations: bool
 
 class Term(BaseModel):
     id: int
