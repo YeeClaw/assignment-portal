@@ -49,4 +49,13 @@ def get_course_weekly_assignments(course_id: str) -> list[Assignment]:
     :return: A list of Pydantic Assignment models.
     """
     endpoint = f"{BASE_URL}/v1/courses/{course_id}/assignments"
+    params = {}
+    params['per_page'] = '100'
+    headers = {"Authorization": f"Bearer {TOKEN}"}
+
+    response = requests.get(endpoint, params=params, headers=headers)
+    logger.debug(response.json())
+    logger.debug(response.headers)
+
+    
     return []

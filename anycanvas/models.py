@@ -148,6 +148,16 @@ class Assignment(BaseModel):
     muted: bool|None
     anonymous_peer_reviews: bool
     anonymous_instructor_annotations: bool
+    graded_submissions_exist: bool
+    is_quiz_assignment: bool
+    in_closed_grading_period: bool
+    can_duplicate: bool
+    original_course_id: int
+    original_assignment_id: int
+    original_lti_resource_link_id: int
+    original_assignment_name: str
+    original_quiz_id: int
+    workflow_state: str
 
 class Term(BaseModel):
     id: int

@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "anycanvas"
+version = "0.1.0"
+description = "A simple integration between Canvas LMS and AnyType for assignments"
+authors = [
+	{ name = "Austin Colt", email = "colt.austin@coltco.net" }
+]
+
+[project.scripts]
+anycanvas = "anycanvas.main:main"
+
+dependencies = [
+	"pydantic==2.12.3",
+	"dotenv==0.9.9",
+	"requests==2.32.5"
+]
+
+[project.optional-dependencies]
+dev = [
+	"pytest==9.0.1"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
